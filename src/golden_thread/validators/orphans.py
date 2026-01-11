@@ -1,8 +1,8 @@
 """Orphan detection validator."""
 
-import fnmatch
 from dataclasses import dataclass, field
 from difflib import get_close_matches
+from pathlib import Path
 from typing import Dict, List
 
 from ..manifest import Manifest
@@ -115,7 +115,8 @@ class OrphanValidator:
             return True
 
         for pattern in self.manifest.exclusions.patterns:
-            if fnmatch.fnmatch(symbol.file_path, pattern):
+            # Use Path.match() which handles ** patterns correctly
+            if Path(symbol.file_path).match(pattern):
                 return True
 
         return False

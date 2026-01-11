@@ -19,14 +19,14 @@ class TestCoverageValidator:
             metadata={},
             symbols=[
                 SymbolMapping(path="test.py::TestClass", type="class", ids=["FEAT-001"]),
-                SymbolMapping(path="test.py::test_function", type="function", ids=["FR-001"]),
+                SymbolMapping(path="test.py::helper_function", type="function", ids=["FR-001"]),
             ],
             exclusions=Exclusions(),
         )
 
         parsed_symbols = [
             CodeSymbol(name="TestClass", type="class", file_path="test.py", line_start=1, line_end=5),
-            CodeSymbol(name="test_function", type="function", file_path="test.py", line_start=7, line_end=10),
+            CodeSymbol(name="helper_function", type="function", file_path="test.py", line_start=7, line_end=10),
         ]
 
         validator = CoverageValidator(manifest, parsed_symbols)

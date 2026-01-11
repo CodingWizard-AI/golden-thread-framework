@@ -1,7 +1,7 @@
 """Coverage validator for code-to-manifest traceability."""
 
-import fnmatch
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Dict, List, Set
 
 from ..manifest import Manifest
@@ -60,7 +60,10 @@ class CoverageValidator:
                 )
                 invalid_mappings.append(mapping.path)
             else:
-                mapped_symbols.add(mapping.path)
+                # Only count as mapped if the symbol is checkable
+                symbol = self.symbol_map[mapping.path]
+                if self._should_check_symbol(symbol):
+                    mapped_symbols.add(mapping.path)
 
         # Check code symbols have manifest entries
         manifest_paths = self.manifest.get_symbol_paths()
@@ -142,7 +145,8 @@ class CoverageValidator:
 
         # Check pattern exclusions
         for pattern in self.manifest.exclusions.patterns:
-            if fnmatch.fnmatch(symbol.file_path, pattern):
+            # Use Path.match() which handles ** patterns correctly
+            if Path(symbol.file_path).match(pattern):
                 return True
 
         return False

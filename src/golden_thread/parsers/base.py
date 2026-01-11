@@ -93,8 +93,8 @@ class BaseParser(ABC):
 
         for ext in extensions:
             # Use rglob for recursive glob
-            pattern = f"**/*{ext}"
-            files.extend(self.root_directory.glob(pattern))
+            pattern = f"*{ext}"
+            files.extend(self.root_directory.rglob(pattern))
 
         # Apply ignore patterns
         return [f for f in files if not self._should_ignore(f)]
