@@ -62,7 +62,7 @@ target-version = "py39"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "--cov=golden_thread --cov-report=term-missing --cov-report=html"
+addopts = "-v"
 
 [tool.mypy]
 python_version = "3.9"
