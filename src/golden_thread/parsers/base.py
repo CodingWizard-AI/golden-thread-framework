@@ -1,6 +1,5 @@
 """Base parser interface for all language parsers."""
 
-import fnmatch
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
@@ -116,11 +115,16 @@ class BaseParser(ABC):
             # File is not relative to root directory
             return True
 
-        path_str = str(rel_path)
-
         for pattern in self.ignore_patterns:
-            if fnmatch.fnmatch(path_str, pattern):
+            # Use Path.match() which handles ** patterns correctly
+            if rel_path.match(pattern):
                 return True
+            # For patterns starting with **, also check without the **/ prefix
+            # to match files at the root level
+            if pattern.startswith("**/"):
+                simple_pattern = pattern[3:]  # Remove "**/""
+                if rel_path.match(simple_pattern):
+                    return True
 
         return False
 

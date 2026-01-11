@@ -116,7 +116,12 @@ class OrphanValidator:
 
         for pattern in self.manifest.exclusions.patterns:
             # Use Path.match() which handles ** patterns correctly
-            if Path(symbol.file_path).match(pattern):
+            file_path = Path(symbol.file_path)
+            if file_path.match(pattern):
+                return True
+            # Also check if just the filename matches (for patterns like **/__init__.py)
+            # matching __init__.py at root
+            if pattern.startswith("**/") and file_path.name == pattern[3:]:
                 return True
 
         return False
