@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - Validates traceability chain: BR → UR → FEAT → CF → FR/NFR/TSR/TCR → V → TC → EA
-- Queries 16 Notion registry databases
+- Queries 17 Notion registry databases
 - File-based caching with configurable TTL
 - Rate limiting (3 req/sec) with exponential backoff
 - Actionable error messages with resolution suggestions
@@ -51,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Traceability Model
 
-Validates 16 Notion registry types:
+Validates 17 Notion registry types:
 - Business Requirements (BR)
 - User Requirements (UR)
 - Features (FEAT)
@@ -68,6 +68,7 @@ Validates 16 Notion registry types:
 - Events (EVT)
 - GraphQL Operations (GQL)
 - gRPC Methods (RPC)
+- REST Endpoints (REST)
 
 ### Known Limitations
 

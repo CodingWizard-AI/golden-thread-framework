@@ -78,7 +78,7 @@ EA (Evidence Artifact)
 
 **Critical Rule**: No V-ID can be marked "Verified" without at least one EA-ID
 
-### 16 Notion Registries
+### 17 Notion Registries available for use
 
 | Registry | ID Pattern | Purpose |
 |----------|-----------|---------|
@@ -96,6 +96,7 @@ EA (Evidence Artifact)
 | Services Matrix | Service Name | Service catalog |
 | Interface Registry | IF-XXX-001 | API interfaces |
 | Events Registry | EVT-XXX-001 | Event definitions |
+| REST Endpoints | REST-XXX-001 | REST endpoints |
 | GraphQL Operations | GQL-XXX-001 | GraphQL ops |
 | gRPC Methods | RPC-XXX-001 | gRPC methods |
 
@@ -165,7 +166,7 @@ notion:
     BR: "db-id-here"
     UR: "db-id-here"
     FEAT: "db-id-here"
-    # ... all 16 registries
+    # ... all 17 registries
 
 services:
   discovery:

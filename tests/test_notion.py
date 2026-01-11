@@ -240,6 +240,7 @@ class TestNotionRegistry:
         assert registry.validate_id_format("BR-AUTH-001") is True
         assert registry.validate_id_format("FEAT-CV-123") is True
         assert registry.validate_id_format("FR-TEST-999") is True
+        assert registry.validate_id_format("REST-HEALTH-001") is True
 
         # Invalid IDs
         assert registry.validate_id_format("INVALID") is False
@@ -254,4 +255,5 @@ class TestNotionRegistry:
 
         assert registry._extract_id_type("BR-AUTH-001") == "BR"
         assert registry._extract_id_type("FEAT-CV-123") == "FEAT"
+        assert registry._extract_id_type("REST-HEALTH-001") == "REST"
         assert registry._extract_id_type("INVALID") is None

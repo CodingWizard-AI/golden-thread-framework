@@ -55,6 +55,7 @@ ID_PATTERNS = {
     'EVT': r'^EVT-[A-Z]+-\d{3}$',
     'GQL': r'^GQL-[A-Z]+-\d{3}$',
     'RPC': r'^RPC-[A-Z]+-\d{3}$',
+    'REST': r'^REST-[A-Z]+-\d{3}$',
 }
 
 # Validation error codes
@@ -89,6 +90,7 @@ REGISTRY_TYPES = [
     'EVT',  # Events Registry
     'GQL',  # GraphQL Operations
     'RPC',  # gRPC Methods
+    'REST', # REST Endpoints
 ]
 
 __all__ = [
