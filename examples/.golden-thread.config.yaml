@@ -1,0 +1,83 @@
+# Golden Thread Framework Configuration Example
+# Place this file at your repository root
+
+notion:
+  # API token - use environment variable for security
+  api_token: ${NOTION_API_TOKEN}
+
+  # Notion API version
+  version: "2022-06-28"
+
+  # Request timeout in seconds
+  timeout: 30
+
+  # Caching configuration
+  cache:
+    enabled: true
+    ttl: 3600  # 1 hour
+    directory: .golden-thread-cache
+
+  # Database IDs - Get these from your Notion database URLs
+  # Example: https://notion.so/workspace/abc123def456 -> abc123def456
+  databases:
+    BR: "notion-db-id-for-business-requirements"
+    UR: "notion-db-id-for-user-requirements"
+    FEAT: "notion-db-id-for-feature-registry"
+    CF: "notion-db-id-for-call-flow-registry"
+    FR: "notion-db-id-for-functional-requirements"
+    NFR: "notion-db-id-for-non-functional-requirements"
+    TSR: "notion-db-id-for-technical-system-requirements"
+    TCR: "notion-db-id-for-transitional-compliance-requirements"
+    V: "notion-db-id-for-verification-matrix"
+    TC: "notion-db-id-for-test-case-registry"
+    EA: "notion-db-id-for-evidence-artifacts"
+    Service: "notion-db-id-for-services-matrix"
+    IF: "notion-db-id-for-interface-registry"
+    EVT: "notion-db-id-for-events-registry"
+    GQL: "notion-db-id-for-graphql-operations"
+    RPC: "notion-db-id-for-grpc-methods"
+
+# Service discovery configuration
+services:
+  discovery:
+    strategy: "manifest"  # or "directory"
+    manifest_filename: ".golden-thread.yaml"
+    root_directories:
+      - services/
+      - packages/
+      - libs/
+
+# Parser configuration
+parsers:
+  python:
+    enabled: true
+    extract: [classes, functions, methods]
+
+  typescript:
+    enabled: true
+    extract: [classes, functions, interfaces, types]
+
+  go:
+    enabled: true
+    extract: [structs, functions, methods, interfaces]
+
+# Validation behavior
+validation:
+  strict_mode: false  # Set to true to fail on warnings
+
+  # Patterns to ignore during validation
+  ignore_patterns:
+    - "**/test_*.py"
+    - "**/*.test.ts"
+    - "**/*_test.go"
+    - "**/mock_*.py"
+    - "**/__init__.py"
+    - "**/migrations/*.py"
+
+  # Minimum required ID types for validation
+  required_ids: [BR, UR, FEAT, FR]
+
+# Report generation
+reports:
+  output_directory: .golden-thread-reports
+  formats: [json]  # Options: json, html

@@ -208,14 +208,168 @@ Plus:
 - Basic console summary with pass/fail counts
 - Exit codes for CI (0 = pass, 1 = fail)
 
-## Next Steps
+## Installation
 
-1. **Create repo:** `golden-thread-framework` in separate repository
-2. **Implement parsers:** Go, Python, TypeScript via tree-sitter
-3. **Build Notion client:** Query registries, cache responses
--- I added the credentials to access my documentation datatables in notion with notion api as an MCP server in claude code mcp servers for you to reference (note its a rest api not mcp). 
-    https://api.notion.com/v1/
-    (See token in your MCP Servers config titled "notion")
-4. **Add validators:** Coverage, orphans, consistency
-5. **Publish package:** PyPI for easy installation
-6. **Integrate CI:** GitHub Actions workflow in monorepo
+### From PyPI (when published)
+
+```bash
+pip install golden-thread-framework
+```
+
+### From Source
+
+```bash
+git clone https://github.com/yourusername/golden-thread-framework.git
+cd golden-thread-framework
+pip install -e .
+```
+
+## Quick Start
+
+### 1. Create Configuration File
+
+Create `.golden-thread.config.yaml` at your repository root:
+
+```yaml
+notion:
+  api_token: ${NOTION_API_TOKEN}  # Set via environment variable
+  databases:
+    BR: "your-business-requirement-db-id"
+    UR: "your-user-requirement-db-id"
+    FEAT: "your-feature-registry-db-id"
+    # ... configure all 16 registry database IDs
+
+services:
+  discovery:
+    manifest_filename: ".golden-thread.yaml"
+    root_directories:
+      - services/
+      - packages/
+
+validation:
+  ignore_patterns:
+    - "**/test_*.py"
+    - "**/*.test.ts"
+```
+
+### 2. Create Service Manifest
+
+Create `.golden-thread.yaml` in each service directory:
+
+```yaml
+service: authentication-service
+version: "1.0"
+
+metadata:
+  owner: platform-team
+  repository: https://github.com/org/monorepo
+
+traceability:
+  features:
+    - id: FEAT-AUTH-001
+      description: "User authentication via OAuth2"
+      business_requirements: [BR-AUTH-001]
+      user_requirements: [UR-AUTH-001]
+      call_flows: [CF-AUTH-001]
+
+  symbols:
+    - path: "auth/oauth_provider.py::OAuthProvider"
+      type: class
+      ids: [FEAT-AUTH-001, FR-AUTH-001]
+
+    - path: "auth/oauth_provider.py::OAuthProvider.authenticate"
+      type: method
+      ids: [FR-AUTH-003, NFR-AUTH-001]
+
+exclusions:
+  patterns:
+    - "**/__init__.py"
+    - "**/migrations/*.py"
+```
+
+### 3. Run Validation
+
+```bash
+# Set Notion API token
+export NOTION_API_TOKEN=your_notion_api_token
+
+# Validate single service
+golden-thread validate --service services/authentication
+
+# Validate entire monorepo
+golden-thread validate --all
+
+# Detect orphaned code
+golden-thread orphans --service services/authentication
+
+# Generate JSON report for CI
+golden-thread validate --all --output json
+```
+
+## CI/CD Integration
+
+### GitHub Actions
+
+```yaml
+# .github/workflows/golden-thread.yml
+name: Golden Thread Validation
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install Golden Thread
+        run: pip install golden-thread-framework
+      - name: Validate traceability
+        env:
+          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
+        run: golden-thread validate --all --output json --strict
+```
+
+## Configuration Reference
+
+See [.claude/implementation-plan.md](.claude/implementation-plan.md) for detailed configuration schemas and examples.
+
+## Error Resolution Guide
+
+| Error Code | What It Means | How to Fix |
+|------------|---------------|------------|
+| `ORPHAN_CODE` | Code exists without manifest entry | Add symbol to `.golden-thread.yaml` |
+| `ORPHAN_MANIFEST` | Manifest entry has no matching code | Fix symbol path or remove entry |
+| `MISSING_BR` | Feature missing business requirement | Link BR-ID in Notion Feature Registry |
+| `MISSING_FR` | Feature missing functional requirement | Create and link FR-ID in Notion |
+| `MISSING_V` | Requirement has no verification | Create V-ID in Verification Matrix |
+| `MISSING_EA` | Verified item missing evidence | Create EA-ID in Evidence Artifacts |
+| `INVALID_ID` | ID not found in Notion | Check ID exists in correct registry |
+
+## Development
+
+### Running Tests
+
+```bash
+pip install -e ".[dev]"
+pytest
+```
+
+### Code Quality
+
+```bash
+black src/ tests/
+ruff check src/ tests/
+mypy src/
+```
+
+## License
+
+Apache 2.0 - See LICENSE file
+
+## Contributing
+
+This is currently a private framework. Contact the maintainers for contribution guidelines.
