@@ -470,7 +470,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 ## Documentation
 
 - **User Guide**: [README.md](README.md) (this file)
-- **Implementation Plan**: [.claude/implementation-plan.md](.claude/implementation-plan.md)
 - **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 - **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
 - **Release Checklist**: [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)
