@@ -1,0 +1,136 @@
+# Golden Thread Service Manifest Example
+# Place this file in each service directory
+
+service: authentication-service
+version: "1.0"
+
+metadata:
+  owner: platform-team
+  repository: https://github.com/org/monorepo
+  path: services/authentication
+
+traceability:
+  # Feature-level mapping
+  features:
+    - id: FEAT-AUTH-001
+      description: "User authentication via OAuth2"
+      business_requirements: [BR-AUTH-001]
+      user_requirements: [UR-AUTH-001, UR-AUTH-002]
+      call_flows: [CF-AUTH-001]
+
+    - id: FEAT-AUTH-002
+      description: "Session management"
+      business_requirements: [BR-AUTH-001]
+      user_requirements: [UR-AUTH-003]
+      call_flows: [CF-AUTH-002]
+
+  # Code symbol mappings
+  symbols:
+    # Python classes
+    - path: "auth/oauth_provider.py::OAuthProvider"
+      type: class
+      ids:
+        - FEAT-AUTH-001
+        - FR-AUTH-001
+        - FR-AUTH-002
+
+    # Python methods
+    - path: "auth/oauth_provider.py::OAuthProvider.authenticate"
+      type: method
+      ids:
+        - FR-AUTH-003
+        - NFR-AUTH-001  # Performance requirement
+
+    - path: "auth/oauth_provider.py::OAuthProvider.refresh_token"
+      type: method
+      ids:
+        - FR-AUTH-004
+
+    # TypeScript interfaces
+    - path: "types/user.ts::UserSession"
+      type: interface
+      ids:
+        - TSR-AUTH-001
+        - IF-AUTH-001
+
+    - path: "types/user.ts::AuthToken"
+      type: interface
+      ids:
+        - TSR-AUTH-002
+
+    # Go structs (if applicable)
+    - path: "internal/auth/token.go::TokenManager"
+      type: struct
+      ids:
+        - FR-AUTH-005
+        - TSR-AUTH-002
+
+    # API endpoints
+    - path: "api/routes.py::POST /auth/login"
+      type: endpoint
+      ids:
+        - GQL-AUTH-001
+        - FR-AUTH-001
+
+    - path: "api/routes.py::POST /auth/logout"
+      type: endpoint
+      ids:
+        - FR-AUTH-006
+
+    # Event handlers
+    - path: "events/auth_events.py::on_login_success"
+      type: event_handler
+      ids:
+        - EVT-AUTH-001
+        - FR-AUTH-010
+
+  # Interface mappings
+  interfaces:
+    - id: IF-AUTH-001
+      type: rest_api
+      endpoint: "/api/v1/auth/login"
+      method: POST
+      requirements: [FR-AUTH-001]
+
+    - id: IF-AUTH-002
+      type: rest_api
+      endpoint: "/api/v1/auth/logout"
+      method: POST
+      requirements: [FR-AUTH-006]
+
+    - id: GQL-AUTH-001
+      type: graphql
+      operation: "mutation login"
+      requirements: [FR-AUTH-002]
+
+    - id: RPC-AUTH-001
+      type: grpc
+      service: "AuthService"
+      method: "Authenticate"
+      requirements: [FR-AUTH-003]
+
+  # Test coverage mappings
+  tests:
+    - path: "tests/test_oauth.py::test_successful_authentication"
+      test_cases: [TC-AUTH-001]
+      verifications: [V-AUTH-001]
+
+    - path: "tests/test_oauth.py::test_invalid_credentials"
+      test_cases: [TC-AUTH-002]
+      verifications: [V-AUTH-002]
+
+    - path: "tests/test_oauth.py::test_token_refresh"
+      test_cases: [TC-AUTH-003]
+      verifications: [V-AUTH-003]
+
+# Explicit exclusions (don't flag as orphans)
+exclusions:
+  patterns:
+    - "**/__init__.py"
+    - "**/migrations/*.py"
+    - "**/test_*.py"
+    - "**/*.test.ts"
+
+  symbols:
+    - "auth/legacy_auth.py::OldAuthProvider"  # Deprecated but kept for reference
+    - "auth/utils.py::deprecated_helper"
