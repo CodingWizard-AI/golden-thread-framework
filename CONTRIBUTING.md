@@ -2,11 +2,23 @@
 
 Thank you for your interest in contributing to the Golden Thread Framework!
 
-## Development Setup
+## For Users
+
+If you want to use the Golden Thread Framework in your project:
+
+```bash
+pip install golden-thread-framework
+```
+
+See the [PyPI package](https://pypi.org/project/golden-thread-framework/) and [README](README.md) for usage documentation.
+
+## For Contributors
+
+### Development Setup
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/golden-thread-framework.git
+   git clone https://github.com/CodingWizard-AI/golden-thread-framework.git
    cd golden-thread-framework
    ```
 

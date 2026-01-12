@@ -27,7 +27,24 @@ The **Golden Thread Framework** provides end-to-end traceability from business r
 
 ## Getting Started
 
-### Step 1: Duplicate the Notion Template
+### Step 1: Install the Golden Thread Framework
+
+Install the validation framework from PyPI:
+
+```bash
+pip install golden-thread-framework
+```
+
+This installs the `golden-thread` CLI tool for validating traceability in your codebase.
+
+**For framework contributors or advanced users:**
+```bash
+git clone https://github.com/CodingWizard-AI/golden-thread-framework.git
+cd golden-thread-framework
+pip install -e .
+```
+
+### Step 2: Duplicate the Notion Template
 
 1. **Access the Template**  
    Visit: [CodingWizard.AI Golden Thread Template](https://codingwizard-ai.notion.site/) 
@@ -38,12 +55,12 @@ The **Golden Thread Framework** provides end-to-end traceability from business r
    - Select your team's Notion workspace
    - Rename to match your project: `[Project Name] - Golden Thread Matrix`
 
-3. **Set Permissions**  
+3. **Set Permissions**
    - Share with your engineering team
    - Grant edit access to architects and tech leads
    - Grant view access to stakeholders
 
-### Step 2: Understand the Template Structure
+### Step 3: Understand the Template Structure
 
 The template contains interconnected databases that maintain traceability:
 

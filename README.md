@@ -1,7 +1,9 @@
-# Golden Thread Framework - Developer Documentation
+# Golden Thread Framework
+
+[![PyPI version](https://img.shields.io/pypi/v/golden-thread-framework.svg?style=for-the-badge)](https://pypi.org/project/golden-thread-framework/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-brightgreen?style=for-the-badge)]
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)]
-[![Golden Thread Framework](https://img.shields.io/badge/Golden%20Thread-Framework-blueviolet?style=for-the-badge)]
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)]
 
 ## Overview
@@ -59,12 +61,17 @@ The **Golden Thread Framework** provides end-to-end traceability from business r
    - Grant edit access to architects and tech leads
    - Grant view access to stakeholders
 
-## golden-thread-framework Quick Start
+## Installation
+
+Install the Golden Thread Framework from PyPI:
 
 ```bash
-# Install from source
-pip install -e .
+pip install golden-thread-framework
+```
 
+## Quick Start
+
+```bash
 # Set Notion API token
 export NOTION_API_TOKEN=your_token_here
 
@@ -73,6 +80,16 @@ golden-thread validate --service path/to/service
 
 # Detect orphans
 golden-thread orphans
+```
+
+### Installing from Source (for Development)
+
+If you want to contribute or modify the framework:
+
+```bash
+git clone https://github.com/CodingWizard-AI/golden-thread-framework.git
+cd golden-thread-framework
+pip install -e .
 ```
 
 ## Architecture
