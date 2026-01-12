@@ -5,10 +5,11 @@ All notable changes to the Golden Thread Framework will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-01-11
+## [0.1.0] - 2026-01-12
 
 ### Added
 
+- **Published to PyPI**: https://pypi.org/project/golden-thread-framework/0.1.0/
 - Initial release of Golden Thread Framework
 - **Core Parsers**: Python (AST), TypeScript (tree-sitter), Go (tree-sitter)
 - **Notion Integration**: REST API client with caching and rate limiting

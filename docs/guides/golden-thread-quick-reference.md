@@ -1,5 +1,15 @@
 # Golden Thread Framework - Quick Reference
 
+## Installation
+
+```bash
+pip install golden-thread-framework
+```
+
+See [PyPI package](https://pypi.org/project/golden-thread-framework/) for details.
+
+---
+
 ## TL;DR
 
 **Every feature must trace from Business Requirement → User Requirement → Feature → Requirements (FR/TSR/NFR) → Interfaces → Test Cases → Evidence**
