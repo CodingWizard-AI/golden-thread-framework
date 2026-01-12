@@ -2,6 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/golden-thread-framework.svg?style=for-the-badge)](https://pypi.org/project/golden-thread-framework/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-brightgreen?style=for-the-badge)]
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)]
 
@@ -465,6 +466,10 @@ twine upload dist/*
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
+
+## License
+
+Apache 2.0 - See [LICENSE](LICENSE)
 
 ## Documentation
 
