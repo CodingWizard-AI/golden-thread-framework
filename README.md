@@ -26,11 +26,15 @@ The **Golden Thread Framework** provides end-to-end traceability from business r
 ---
 
 ## Golden Thread Documentation References:
-[Golden Thread Framework — Full Guide](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/guides/golden-thread-framework.md#golden-thread-traceability-framework) — detailed framework and process
-[Golden Thread — Quick Reference ](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/guides/golden-thread-quick-reference.md)— TL;DR, ID conventions, quick workflow
-[Traceability GitHub Actions workflow](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/golden-thread-check.yml) (golden-thread-check.yml) — automated checks and PR comments
-[Golden Thread Diagrams](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/diagrams/golden-thread-diagrams.md) — architecture/traceability diagrams
-[Pull Request Template ](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/templates/PULL_REQUEST_TEMPLATE.md) — required PR fields and traceability checklist
+- [Golden Thread Framework — Full Guide](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/guides/golden-thread-framework.md#golden-thread-traceability-framework) — detailed framework and process
+
+- [Golden Thread — Quick Reference ](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/guides/golden-thread-quick-reference.md)— TL;DR, ID conventions, quick workflow
+
+- [Traceability GitHub Actions workflow](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/golden-thread-check.yml) (golden-thread-check.yml) — automated checks and PR comments
+
+- [Golden Thread Diagrams](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/diagrams/golden-thread-diagrams.md) — architecture/traceability diagrams
+
+- [Pull Request Template ](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/templates/PULL_REQUEST_TEMPLATE.md) — required PR fields and traceability checklist
 
 ---
 ## Pre-requisite
