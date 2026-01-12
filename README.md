@@ -1,11 +1,57 @@
 # Golden Thread Framework - Developer Documentation
 
-End-to-end traceability framework for validating code-to-requirements alignment through Notion registries.
+## Overview
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+The **Golden Thread Framework** provides end-to-end traceability from business requirements through architecture, implementation, testing, and deployment. This ensures every line of code can be traced back to a business need, and every business requirement can be traced forward to its implementation.
 
-## Quick Start
+## Why Use Golden Thread Traceability?
+
+### Benefits
+
+✅ **Accountability**: Every code change ties to a business requirement  
+✅ **Completeness**: Ensure all requirements are implemented  
+✅ **Impact Analysis**: Understand what's affected when requirements change  
+✅ **Audit Trail**: Track decisions and their rationale  
+✅ **Onboarding**: New developers understand *why* code exists  
+✅ **Quality**: Requirements drive testing, ensuring coverage  
+
+### The Problem Without It
+
+❌ Orphaned code with unknown purpose  
+❌ Missed requirements discovered late  
+❌ Unclear impact of changes  
+❌ Difficulty understanding architectural decisions  
+❌ Technical debt accumulation  
+
+---
+
+## Golden Thread Documentation References:
+[Golden Thread Framework — Full Guide](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/guides/golden-thread-framework.md#golden-thread-traceability-framework) — detailed framework and process
+[Golden Thread — Quick Reference ](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/guides/golden-thread-quick-reference.md)— TL;DR, ID conventions, quick workflow
+[Traceability GitHub Actions workflow](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/golden-thread-check.yml) (golden-thread-check.yml) — automated checks and PR comments
+[Golden Thread Diagrams](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/diagrams/golden-thread-diagrams.md) — architecture/traceability diagrams
+[Pull Request Template ](https://github.com/CodingWizard-AI/golden-thread-framework/blob/aace298b54a46960cb9f7c8bea2b267604326467/docs/templates/PULL_REQUEST_TEMPLATE.md) — required PR fields and traceability checklist
+
+---
+## Pre-requisite
+
+### Duplicate and populate the CodingWizard.AI Golden Thread Notion Template (See golden-thread-framework.md for in-depth walk-thorugh)
+
+1. **Access the Template**  
+   Visit: [CodingWizard.AI Golden Thread Template](https://codingwizard-ai.notion.site/) 
+   - https://codingwizard-ai.notion.site
+
+2. **Duplicate to Your Workspace**  
+   - Click "Duplicate" in the top-right corner
+   - Select your team's Notion workspace
+   - Rename to match your project: `[Project Name] - Golden Thread Matrix`
+
+3. **Set Permissions**  
+   - Share with your engineering team
+   - Grant edit access to architects and tech leads
+   - Grant view access to stakeholders
+
+## golden-thread-framework Quick Start
 
 ```bash
 # Install from source
