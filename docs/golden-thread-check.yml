@@ -1,0 +1,247 @@
+name: Golden Thread Traceability Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate-traceability:
+    name: Validate Traceability
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for commit analysis
+      
+      - name: Check PR Description has Traceability
+        if: github.event_name == 'pull_request'
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          echo "Checking PR description for traceability markers..."
+          
+          # Check for FEAT ID
+          if ! echo "$PR_BODY" | grep -q "FEAT-[A-Z0-9]\+-[0-9]\+"; then
+            echo "❌ ERROR: PR description must include Feature ID (e.g., FEAT-ONBOARD-001)"
+            echo "See: docs/guides/golden-thread-quick-reference.md"
+            exit 1
+          fi
+          
+          # Check for FR or TSR ID
+          if ! echo "$PR_BODY" | grep -qE "(FR|TSR|NFR)-[A-Z0-9]\+-[0-9]\+"; then
+            echo "❌ ERROR: PR description must include Functional/Technical Requirement ID (e.g., FR-AUTH-001, TSR-DB-001)"
+            echo "See: docs/guides/golden-thread-quick-reference.md"
+            exit 1
+          fi
+          
+          # Check for UR ID
+          if ! echo "$PR_BODY" | grep -q "UR-[A-Z0-9]\+-[0-9]\+"; then
+            echo "❌ ERROR: PR description must include User Requirement ID (e.g., UR-MON-001)"
+            echo "See: docs/guides/golden-thread-quick-reference.md"
+            exit 1
+          fi
+          
+          echo "✅ PR description has required traceability markers"
+      
+      - name: Validate Commit Messages
+        run: |
+          echo "Validating commit messages for traceability..."
+          
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BASE_SHA=${{ github.event.pull_request.base.sha }}
+            HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          else
+            BASE_SHA=${{ github.event.before }}
+            HEAD_SHA=${{ github.sha }}
+          fi
+          
+          # Get all commits in this PR/push
+          COMMITS=$(git log --format="%H" $BASE_SHA..$HEAD_SHA)
+          
+          MISSING_ID=0
+          
+          for COMMIT in $COMMITS; do
+            MESSAGE=$(git log --format=%B -n 1 $COMMIT)
+            FIRST_LINE=$(echo "$MESSAGE" | head -n 1)
+            
+            # Skip merge commits
+            if echo "$FIRST_LINE" | grep -q "^Merge"; then
+              continue
+            fi
+            
+            # Check for requirement/interface IDs in first line (FR, TSR, NFR, IF, REST, GQL, RPC)
+            if ! echo "$FIRST_LINE" | grep -qE "(FR|TSR|NFR|IF|REST|GQL|RPC|EVT)-[A-Z0-9]\+-[0-9]\+"; then
+              echo "❌ Commit $COMMIT missing requirement/interface ID in first line:"
+              echo "   $FIRST_LINE"
+              MISSING_ID=1
+            else
+              echo "✅ Commit $COMMIT has requirement/interface ID"
+            fi
+          done
+          
+          if [ $MISSING_ID -eq 1 ]; then
+            echo ""
+            echo "ERROR: Some commits are missing requirement/interface ID references"
+            echo ""
+            echo "Commit message format should be:"
+            echo "  FR-XXX-NNN, IF-XXX-NNN: Brief description"
+            echo ""
+            echo "Example:"
+            echo "  FR-AUTH-001, RPC-ACCT-001: Implement user registration"
+            echo ""
+            echo "Valid ID prefixes: FR, TSR, NFR, IF, REST, GQL, RPC, EVT"
+            echo ""
+            echo "See: docs/guides/golden-thread-quick-reference.md"
+            exit 1
+          fi
+          
+          echo "✅ All commits have requirement/interface ID references"
+      
+      - name: Check for Orphaned Files
+        run: |
+          echo "Checking for orphaned implementation files without tests..."
+          
+          # Find all Go files in services/
+          GO_FILES=$(find services/ -name "*.go" -not -name "*_test.go" 2>/dev/null || true)
+          
+          MISSING_TESTS=0
+          
+          for GO_FILE in $GO_FILES; do
+            # Skip main.go and test files
+            if echo "$GO_FILE" | grep -q "main.go\|_test.go"; then
+              continue
+            fi
+            
+            # Check if corresponding test file exists
+            TEST_FILE="${GO_FILE%.go}_test.go"
+            if [ ! -f "$TEST_FILE" ]; then
+              echo "⚠️  Missing test file for: $GO_FILE"
+              MISSING_TESTS=1
+            fi
+          done
+          
+          if [ $MISSING_TESTS -eq 1 ]; then
+            echo ""
+            echo "WARNING: Some Go files are missing corresponding test files"
+            echo "This doesn't fail the build but should be addressed"
+          else
+            echo "✅ All Go files have corresponding test files"
+          fi
+      
+      - name: Generate Traceability Report
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "# 🧵 Traceability Report" > traceability-report.md
+          echo "" >> traceability-report.md
+          
+          # Extract IDs from PR description
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          FEAT_ID=$(echo "$PR_BODY" | grep -o "FEAT-[A-Z0-9]\+-[0-9]\+" | head -n 1)
+          FR_IDS=$(echo "$PR_BODY" | grep -o "FR-[A-Z0-9]\+-[0-9]\+" | sort -u)
+          TSR_IDS=$(echo "$PR_BODY" | grep -o "TSR-[A-Z0-9]\+-[0-9]\+" | sort -u)
+          UR_ID=$(echo "$PR_BODY" | grep -o "UR-[A-Z0-9]\+-[0-9]\+" | head -n 1)
+          IF_IDS=$(echo "$PR_BODY" | grep -oE "(IF|REST|GQL|RPC)-[A-Z0-9]\+-[0-9]\+" | sort -u)
+          
+          echo "## Feature" >> traceability-report.md
+          echo "- **Feature**: \`$FEAT_ID\`" >> traceability-report.md
+          echo "" >> traceability-report.md
+          
+          if [ -n "$FR_IDS" ]; then
+            echo "## Functional Requirements" >> traceability-report.md
+            for FR_ID in $FR_IDS; do
+              echo "- \`$FR_ID\`" >> traceability-report.md
+            done
+            echo "" >> traceability-report.md
+          fi
+          
+          if [ -n "$TSR_IDS" ]; then
+            echo "## Technical & System Requirements" >> traceability-report.md
+            for TSR_ID in $TSR_IDS; do
+              echo "- \`$TSR_ID\`" >> traceability-report.md
+            done
+            echo "" >> traceability-report.md
+          fi
+          
+          if [ -n "$IF_IDS" ]; then
+            echo "## Interfaces" >> traceability-report.md
+            for IF_ID in $IF_IDS; do
+              echo "- \`$IF_ID\`" >> traceability-report.md
+            done
+            echo "" >> traceability-report.md
+          fi
+          
+          echo "## User Requirement" >> traceability-report.md
+          echo "- **User Requirement**: \`$UR_ID\`" >> traceability-report.md
+          echo "" >> traceability-report.md
+          
+          echo "## Commits" >> traceability-report.md
+          git log --format="- %s (%h)" ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} >> traceability-report.md
+          
+          cat traceability-report.md
+      
+      - name: Post Comment on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '## ✅ Golden Thread Traceability Check\n\n';
+            
+            try {
+              const report = fs.readFileSync('traceability-report.md', 'utf8');
+              comment += report;
+              comment += '\n\n---\n';
+              comment += 'All traceability checks passed! ✨\n';
+            } catch (error) {
+              comment += '⚠️ Could not generate full report. Check workflow logs.\n';
+            }
+            
+            comment += '\n📚 [Golden Thread Framework Documentation](../blob/main/docs/guides/golden-thread-framework.md)';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  check-notion-sync:
+    name: Check Notion Synchronization
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Reminder to Update Notion
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const comment = `
+            ## 📝 Notion Update Reminder
+            
+            Please ensure you've updated the following in Notion:
+            
+            - [ ] Functional/Technical Requirement status updated
+            - [ ] Feature progress updated
+            - [ ] Test cases created/updated (TC-XXX-NNN)
+            - [ ] Evidence artifacts documented (EA-XXX-NNN)
+            - [ ] Interface registry updated (if applicable)
+            
+            **Why?** This maintains the Golden Thread from requirements to deployed code.
+            
+            [📚 Learn more about Golden Thread Framework](../docs/guides/golden-thread-framework.md)
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
