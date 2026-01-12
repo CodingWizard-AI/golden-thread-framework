@@ -1,5 +1,8 @@
 # Golden Thread Framework - Developer Documentation
-## 📖 Open Source
+[![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9D%A4-brightgreen?style=for-the-badge)]
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)]
+[![Golden Thread Framework](https://img.shields.io/badge/Golden%20Thread-Framework-blueviolet?style=for-the-badge)]
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)]
 
 ## Overview
 
